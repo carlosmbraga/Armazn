@@ -1,0 +1,42 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <title>ARMAZN - Upload your files and share</title>
+
+    <!-- Bootstrap core CSS -->
+    <link  rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Custom styles for this template -->
+    <link  rel="stylesheet" href="{{ url_for('static', filename='css/cover.css') }}">
+  </head>
+
+  <body class="text-center">
+
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <a href="/" class="masthead-brand"><img src="{{ url_for('static', filename='img/ARMAZN.png') }}" width="250" height="50" ><a>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link" href="#">Registre-se</a>
+            <a class="nav-link" href="#">Login</a>
+          </nav>
+        </div>
+      </header>
+	
+       {% block content %}
+	   {% endblock %}
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p>Desenvolvido por: Carlos, Gabriel, Helton, Nicolas, Nikolle e Ricardo -  &copy UNITAU 2018</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
