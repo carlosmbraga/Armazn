@@ -23,7 +23,7 @@ class File(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	filename = db.Column(db.String, unique=True)
 	size = db.Column(db.Numeric, unique=True)
-	owner_id = db.Column(db.Intenger, db.ForeignKey('users.id'))
+	owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 	owner = db.relationship('User', foreign_keys=owner_id)
 
@@ -33,4 +33,4 @@ class File(db.Model):
 		self.owner_id = owner_id
 
 	def __repr__(self):
-		return "<File %r>" % self.id
+		return "<File %r>" % self.filename
