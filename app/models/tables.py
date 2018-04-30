@@ -4,9 +4,9 @@ class User(db.Model):
 	__tablename__ = "users"
 
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String, unique=True)
-	email = db.Column(db.String, unique=True)
-	password = db.Column(db.String)
+	username = db.Column(db.String(20), unique=True)
+	email = db.Column(db.String(50), unique=True)
+	password = db.Column(db.String(20))
 
 	def __init__(self, username, password, email):
 		self.username = username
@@ -21,7 +21,7 @@ class File(db.Model):
 	__tablename__ = "files"
 
 	id = db.Column(db.Integer, primary_key=True)
-	filename = db.Column(db.String, unique=True)
+	filename = db.Column(db.String(50), unique=True)
 	size = db.Column(db.Numeric, unique=True)
 	owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
