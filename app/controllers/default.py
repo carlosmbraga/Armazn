@@ -10,13 +10,11 @@ def index():
 @app.route('/registro')
 def registro():
     return render_template('registro.html')
-	
+
 @app.route('/login')
 def login():
     return render_template('login.html')
 
-	
-
-
-
-	
+@app.errorhandler(404)
+def page_not_found(e):
+  return render_template('error.html'), 404	
