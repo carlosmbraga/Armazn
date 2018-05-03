@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 
-{% block content%}
-	
-	
-
+{% block content %}
+<div class="container">
+<div class="row">
+<form action="" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Username</label>
+      {{ form.username(class="form-control mb-2 mr-sm-2", type="username", placeholder="Enter username")}}
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">Email</label>
+      {{ form.email(class="form-control mb-2 mr-sm-2", type="email", placeholder="Enter email")}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputAddress">Password</label>
+    {{ form.password(class="form-control", type="password", placeholder="Enter Password")}}
+  </div>
+  <div class="form-group">
+    <label for="inputAddress2">Confirm Password</label>
+    {{ form.password2(class="form-control", type="password", placeholder="Confirm Password")}}
+  </div>
+  <button type="submit" class="btn btn-primary">Registrar</button>
+</form>
+</div>
+</div>
 {% endblock %}
+
+

@@ -1,7 +1,46 @@
 {% extends 'base.html' %}
 
-{% block content%}
-	
-	
-
+{% block content %}
+<div class="container">
+<div class="row">
+<form action="" method="POST">
+{{ form.csrf_token }}
+<h1>Login</h1>
+	  <div class="form-group">
+		<label for="exampleInputEmail1">Email address</label>
+		{{ form.email(class="form-control mb-2 mr-sm-2", type="email", placeholder="Enter email")}}
+		{% if form.errors %}
+			<div class="alert alert-danger" role="alert">
+			   <ul>
+			   {% for e in form.errors.email %}
+					<li>{{ e }}</li>
+			   {% endfor %}
+			   </ul>
+			</div>
+		{% endif %}
+		<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+	  </div>
+      <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      {{ form.password(class="form-control", type="password", placeholder="Enter Password")}}
+	  {% if form.errors %}
+		<div class="alert alert-danger" role="alert">
+		   <ul>
+		   {% for e in form.errors.password %}
+				<li>{{ e }}</li>
+           {% endfor %}
+		   </ul>
+		</div>
+	  {% endif %}
+      </div>
+      <div class="checkbox">
+      {{ form.remember_me }} Remember me
+      </div>
+	  <br>
+      <button type="submit" class="btn btn-primary">Login</button> 
+</form>
+</div>
+</div>
 {% endblock %}
+
+

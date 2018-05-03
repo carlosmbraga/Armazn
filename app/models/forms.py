@@ -47,6 +47,17 @@ class RegisterForm(FlaskForm):
         'Confirm Password',
         validators=[DataRequired()]
     )
+	
+def create_user(cls, username, email, password, admin=False):
+        try:
+            with DATABASE.transaction():
+                cls.create(
+                    username=username,
+                    email=email,
+                    password=generate_password_hash(password),
+                    is_admin=admin)
+        except IntegrityError:
+            raise ValueError("User already exists")
     
 
 class LoginForm(FlaskForm):
