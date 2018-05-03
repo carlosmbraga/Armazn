@@ -23,7 +23,7 @@ class File(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	filename = db.Column(db.String(50), unique=True)
 	size = db.Column(db.Numeric, unique=True)
-	content = db.Column(db.Text, unique=True)
+	content = db.Column(db.Text)
 	owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 	owner = db.relationship('User', foreign_keys=owner_id)
