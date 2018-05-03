@@ -1,9 +1,17 @@
 from flask import render_template
 from app import app, db
 from flask import Flask, request, redirect, url_for, session, g, flash, \
-     render_template
+     render_template, send_from_directory
+from werkzeug.utils import secure_filename
 from app.models import forms
 from app.models import tables
+import os
+
+
+UPLOAD_FOLDER = 'app/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'png'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 @app.route('/')
 def index():
@@ -21,7 +29,7 @@ def registro():
         )
         return redirect(url_for('login'))
     return render_template('registro.html', form=form)
-	
+
 @app.route('/login', methods=('GET', 'POST'))
 def login():
     form = forms.LoginForm()
@@ -39,10 +47,38 @@ def login():
                 flash("Your email or password doesn't match!", "error")
     return render_template('login.html', form=form)
 
+# abaixo, /uploads e /uploads/<filename>: tratam do upload e armazenamento dos arquivos
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/uploads', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file', filename=filename))
+
+    return render_template('upload.html')
+
+# precisa de melhoria do layout dessas paginas de upload, mas o funcionamento está ok
+# (eles salvam na pasta uploads que eu criei no diretório do app) e
+# precisa tbm melhorar o tratamento de erros (nos if's), caso o arquivo enviado
+# não seja da extensão permitida ou caso não haja arquivo enviado
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+# error handling
 @app.errorhandler(404)
 def page_not_found(e):
-  return render_template('error.html'), 404	
-
-
-
-	
+  return render_template('error.html'), 404
