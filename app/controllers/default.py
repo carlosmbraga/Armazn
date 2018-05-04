@@ -45,7 +45,7 @@ def login():
             if  user and user.password == form.password.data:
                 login_user(user)
                 flash("Olá " + user.username, "success")
-                return redirect(url_for('index'))
+                return redirect(url_for('home'))
             else:
                 flash("Your email or password doesn't match!", "error")
     else:
@@ -61,8 +61,20 @@ def allowed_file(filename):
     return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/uploads', methods=['GET', 'POST'])
-def upload_file():
+# precisa de melhoria do layout dessas paginas de upload, mas o funcionamento está ok
+# (eles salvam na pasta uploads que eu criei no diretório do app) e
+# precisa tbm melhorar o tratamento de erros (nos if's), caso o arquivo enviado
+# não seja da extensão permitida ou caso não haja arquivo enviado
+@app.route('/upload_engine/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/upload_engine', methods=['GET', 'POST'])
+def upload_engine():
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part')
@@ -76,15 +88,7 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('uploaded_file', filename=filename))
 
-    return render_template('upload.html')
-
-# precisa de melhoria do layout dessas paginas de upload, mas o funcionamento está ok
-# (eles salvam na pasta uploads que eu criei no diretório do app) e
-# precisa tbm melhorar o tratamento de erros (nos if's), caso o arquivo enviado
-# não seja da extensão permitida ou caso não haja arquivo enviado
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    return render_template('upload_engine.html')
 
 @app.errorhandler(404)
 def page_not_found(e):
