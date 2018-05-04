@@ -1,0 +1,13 @@
+.content_title{border-bottom:2px solid #ddd;color:#333;font-size:20px;font-weight:600;padding:0 0 5px}
+textarea.paste_code,textarea.paste_textarea{background-color:#fff;border:1px solid #ddd;border-radius:3px;box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-sizing:border-box;display:block;font-family:Consolas,Menlo,Monaco,"Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace,serif;font-size:13px;height:200px;min-height:200px;line-height:21px;width:100%;margin:0;padding:8px 12px}
+.textarea_border{margin:0 0 10px;padding:0}
+.form_right{float:left;line-height:35px;min-width:300px;text-align:left;margin:0 0 10px}
+.form_left{float:left;line-height:35px;width:150px;margin:0 0 10px}
+.form_frame_left{float:left;min-width:558px;max-width:558px;margin:10px 10px 10px 0}
+.form_frame_full{clear:both}
+.form_login_frame{border-bottom:2px solid #ddd;border-left:1px solid #ddd;border-radius:0 0 0 3px;float:left;font-size:.8em;margin:0;padding:10px 0 10px 10px}
+input.post_input,select.post_select{background-color:#fff;border:1px solid #ddd;border-radius:3px;box-shadow:inset 0 1px 1px rgba(0,0,0,.075);color:#181818;font-family:"segoe ui","trebuchet MS","Lucida Sans Unicode","Lucida Sans",Sans-Serif;font-size:1em;width:272px;padding:8px}
+select.post_select{width:272px}
+button.i_highlight{background:url(highlight.png) no-repeat 0 0;background-size:20px 20px;border:0;cursor:pointer;height:20px;width:20px}
+#header_icons,.span_right{float:right;text-align:right}
+.form_frame{font-size:.8em}
