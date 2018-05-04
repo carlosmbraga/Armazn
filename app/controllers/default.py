@@ -44,7 +44,6 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
             if  user and user.password == form.password.data:
                 login_user(user)
-                flash("Olá " + user.username, "success")
                 return redirect(url_for('home'))
             else:
                 flash("Your email or password doesn't match!", "error")
@@ -71,7 +70,7 @@ def uploaded_file(filename):
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home_user.html')
 
 @app.route('/upload_engine', methods=['GET', 'POST'])
 def upload_engine():

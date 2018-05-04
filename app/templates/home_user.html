@@ -1,0 +1,122 @@
+{% extends 'home.html' %}
+{% block content %}
+<div id="main" class="container" style="margin-top: 50px">
+  	<div id="top" class="row">
+		<div class="col-sm-3">
+			<h2>Arquivos</h2>
+		</div>
+		<div class="col-sm-6">
+			
+			<div class="input-group h2">
+				<input name="data[search]" class="form-control" id="search" type="text" placeholder="Pesquisar Itens">
+					<button class="btn btn-primary" type="submit">Buscar</button>
+			</div>
+			
+		</div>
+	</div> <!-- /#top -->
+	<br>
+ 	<div id="list" class="row">
+	
+	<div class="table-responsive col-md-12">
+		<table class="table table-striped" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nome</th>
+					<th>Size</th>
+					<th>Data</th>
+					<th class="actions">Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>teste_file.txt</td>
+					<td>18K</td>
+					<td>01/01/2015</td>
+					<td class="actions">
+						<a class="btn btn-outline-default btn-xs" href="view.html">Visualizar</a>
+						<a class="btn btn-outline-default btn-xs" href="edit.html">Editar</a>
+						<a class="btn btn-outline-default btn-xs"  href="#" data-toggle="modal" data-target="#delete-modal">Excluir</a>
+					</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>teste_file.txt</td>
+					<td>10K</td>
+					<td>05/01/2015</td>
+					<td class="actions">
+						<a class="btn btn-outline-default btn-xs" href="view.html">Visualizar</a>
+						<a class="btn btn-outline-default btn-xs" href="edit.html">Editar</a>
+						<a class="btn btn-outline-default btn-xs"  href="#" data-toggle="modal" data-target="#delete-modal">Excluir</a>
+					</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>teste_file.txt</td>
+					<td>14K</td>
+					<td>06/07/2015</td>
+					<td class="actions">
+						<a class="btn btn-outline-default btn-xs" href="view.html">Visualizar</a>
+						<a class="btn btn-outline-default btn-xs" href="edit.html">Editar</a>
+						<a class="btn btn-outline-default btn-xs"  href="#" data-toggle="modal" data-target="#delete-modal">Excluir</a>
+					</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>teste_file.txt</td>
+					<td>2MB</td>
+					<td>07/08/2017</td>
+					<td class="actions">
+						<a class="btn btn-outline-default btn-xs" href="view.html">Visualizar</a>
+						<a class="btn btn-outline-default btn-xs" href="edit.html">Editar</a>
+						<a class="btn btn-outline-default btn-xs"  href="#" data-toggle="modal" data-target="#delete-modal">Excluir</a>
+					</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>teste_file.txt</td>
+					<td>1MB</td>
+					<td>01/05/2018</td>
+					<td class="actions">
+						<a class="btn btn-outline-default btn-xs" href="view.html">Visualizar</a>
+						<a class="btn btn-outline-default btn-xs" href="edit.html">Editar</a>
+						<a class="btn btn-outline-default btn-xs"  href="#" data-toggle="modal" data-target="#delete-modal">Excluir</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	</div> <!-- /#list -->
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+
+ </div> <!-- /#main -->
+<!-- Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalLabel">Excluir Item</h4>
+      </div>
+      <div class="modal-body">
+        Deseja realmente excluir este item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Sim</button>
+	<button type="button" class="btn btn-default" data-dismiss="modal">N&atilde;o</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
