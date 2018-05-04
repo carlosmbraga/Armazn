@@ -1,3 +1,4 @@
+.gitignore
 __pycache__
 migrations
-
+app/__init__.pyc
