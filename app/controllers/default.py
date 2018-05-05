@@ -85,7 +85,7 @@ def upload_engine():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file', filename=filename))
+            return redirect(url_for('home', filename=filename))
 
     return render_template('upload_engine.html')
 
