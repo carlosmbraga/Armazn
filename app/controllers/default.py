@@ -1,20 +1,18 @@
 import os
 from app import app, db, lm
 from flask import Flask, request, redirect, url_for, session, render_template, send_from_directory, flash
-from flask_login import login_user, logout_user	 
+from flask_login import login_user, logout_user, current_user	 
 from werkzeug.utils import secure_filename
 from app.models import forms
 from app.models import tables
 from app.models.tables import User
 from flask_autoindex import AutoIndex
 
-
-UPLOAD_FOLDER = 'app/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'png'])
+UPLOAD_FOLDER = 'app/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+files_index = AutoIndex(app, os.path.curdir + '/app/uploads/', add_url_rules=False)
 
-
-#AutoIndex(app, browse_root=os.path.curdir)
 
 @lm.user_loader
 def load_user(id):
@@ -75,7 +73,7 @@ def uploaded_file(filename):
 	
 @app.route('/home')
 def home():
-    return render_template('home_user.html')
+    return autoindex()
 
 @app.route('/upload_engine', methods=['GET', 'POST'])
 def upload_engine():
@@ -98,8 +96,7 @@ def upload_engine():
 def page_not_found(e):
   return render_template('error.html'), 404	
 
-files_index = AutoIndex(app, os.path.curdir + '/app/uploads', add_url_rules=False)
-# Custom indexing
+
 @app.route('/arquivos')
 @app.route('/arquivos/<path:path>')
 def autoindex(path='.'):

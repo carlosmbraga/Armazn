@@ -7,10 +7,55 @@
 {% endblock %}
 
 {% block header %}
-  <div style="width: 500px; margin: 30px auto;">
-    <h2>Arquivos</h2>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <title>ARMAZN - Home</title>
+
+    <!-- Bootstrap core CSS -->
+    <link  rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Custom styles for this template -->
+    <link  rel="stylesheet" href="{{ url_for('static', filename='css/template_armazn2.css') }}">
+	<link  rel="stylesheet" href="{{ url_for('static', filename='css/8.css') }}">
+  </head>
+
+	<body>
+	  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+	  <a href="/home" class="my-0 mr-md-auto masthead-brand"><img src="{{ url_for('static', filename='img/logotipo.png') }}" width="250" height="50" ><a>
+      <nav class="my-2 my-md-0 mr-md-3">
+	    <a class="p-2 text-dark" href="/upload_engine">Novo Upload</a>
+        <a class="p-2 text-dark" href="/account">Minha conta</a>
+		<a class="btn btn-outline-primary" href="{{ url_for('logout')}}">Logout ( {{current_user.username }} )</a>
+	  </nav>
+      </div>
+	  	
+	<div class="container">
+	<h2>Arquivos</h2>
+	<hr>
+
+	{% with messages = get_flashed_messages() %}
+		 {% if messages %}
+		  <div class="alert alert-warning">
+			<ul class=flashes>
+			{% for message in messages %}
+			  <li>{{ message }}</li>
+			{% endfor %}
+			</ul>
+		  </div>
+		 {% endif %}
+	  {% endwith %}
+	  
+	{% block content %}
+	{% endblock %}
+
+  </body>
 {% endblock %}
 
 {% block footer %}
-  </div>
+</div>
 {% endblock %}
