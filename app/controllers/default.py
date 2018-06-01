@@ -52,7 +52,7 @@ def login():
         if user and user.password == form.password.data:
             login_user(user)
             app.config['UPLOAD_FOLDER'] += user.username
-            files_index.rootdir = RootDirectory( os.path.curdir +
+            files_index.rootdir = RootDirectory(os.path.curdir +
                                                     '/' + app.config['UPLOAD_FOLDER'], autoindex=files_index)
             return redirect(url_for('home'))
         else:
@@ -80,6 +80,8 @@ def uploaded_file(filename):
 
 @app.route('/home')
 def home():
+    if not os.listdir(app.config['UPLOAD_FOLDER']):
+        flash("Diretório pessoal vazio!")
     return autoindex()
 
 
