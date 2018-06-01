@@ -6,14 +6,13 @@ from werkzeug.utils import secure_filename
 from app.models import forms
 from app.models import tables
 from app.models.tables import User
-from flask_autoindex import AutoIndex
+from flask_autoindex import AutoIndex, RootDirectory
 
 ALLOWED_EXTENSIONS = set(['txt', 'png'])
 UPLOAD_FOLDER = 'app/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 files_index = AutoIndex(app, os.path.curdir +
-                        '/app/uploads/', add_url_rules=False)
-
+                        '/' + app.config['UPLOAD_FOLDER'], add_url_rules=False)
 
 @lm.user_loader
 def load_user(id):
@@ -37,12 +36,13 @@ def registro():
             db.session.add(u)
             db.session.commit()
             flash("Usuario registrado com sucesso", "success")
+
+            os.mkdir(os.path.join(app.config['UPLOAD_FOLDER'], str(u.username)))
             return redirect(url_for('login'))
         else:
             flash("Falha no registro", "error")
     else:
         return render_template('registro.html', form=form)
-
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
@@ -51,16 +51,19 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.password == form.password.data:
             login_user(user)
+            app.config['UPLOAD_FOLDER'] += user.username
+            files_index.rootdir = RootDirectory( os.path.curdir +
+                                                    '/' + app.config['UPLOAD_FOLDER'], autoindex=files_index)
             return redirect(url_for('home'))
         else:
             flash("Your email or password doesn't match!", "error")
     else:
         return render_template('login.html', form=form)
 
-
 @app.route('/logout')
 def logout():
     logout_user()
+    app.config['UPLOAD_FOLDER'] = 'app/uploads/'
     return redirect(url_for('index'))
 
 # abaixo, /uploads e /uploads/<filename>: tratam do upload e armazenamento dos arquivos
@@ -69,12 +72,6 @@ def logout():
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# precisa de melhoria do layout dessas paginas de upload, mas o funcionamento está ok
-# (eles salvam na pasta uploads que eu criei no diretório do app) e
-# precisa tbm melhorar o tratamento de erros (nos if's), caso o arquivo enviado
-# não seja da extensão permitida ou caso não haja arquivo enviado
-
 
 @app.route('/upload_engine/<filename>')
 def uploaded_file(filename):
@@ -102,13 +99,13 @@ def upload_engine():
             flash('No file part')
             return redirect(request.url)
 
-        file=request.files['file']
+        file = request.files['file']
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
 
         if file and allowed_file(file.filename):
-            filename=secure_filename(file.filename)
+            filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('home', filename=filename))
 
