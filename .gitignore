@@ -2,3 +2,6 @@ __pycache__
 migrations
 app/__init__.pyc
 app/uploads
+app/info
+venv/
+info
