@@ -11,6 +11,10 @@ from flask_autoindex import AutoIndex, RootDirectory
 ALLOWED_EXTENSIONS = set(['txt', 'png'])
 UPLOAD_FOLDER = 'app/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(os.path.join(os.path.curdir, app.config['UPLOAD_FOLDER'])):
+    os.mkdir(os.path.join(os.path.curdir, app.config['UPLOAD_FOLDER']))
+
 files_index = AutoIndex(app, os.path.curdir +
                         '/' + app.config['UPLOAD_FOLDER'], add_url_rules=False)
 
