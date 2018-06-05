@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}   
+<div class="container">
+<h1>Contato</h1>
+<hr> 
+	<form class="form" action="" method="POST" enctype="multipart/form-data">
+    <input class="form-control" name="action" value="submit" type="hidden">Nome:<br>
+    <input class="form-control" name="name" size="30" type="text"><br>Email:<br>
+    <input class="form-control" name="email" size="30" type="text"><br>Mensagem:<br>
+    <textarea class="form-control" name="message" rows="7" cols="30">
+    </textarea><br>
+    <a class="btn btn-primary" href="/">Enviar</a>
+    </form>
+</div>
+{% endblock %}

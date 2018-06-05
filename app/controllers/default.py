@@ -1,4 +1,5 @@
 import os
+import shutil
 from app import app, db, lm
 from flask import Flask, request, redirect, url_for, session, render_template, send_from_directory, flash
 from flask_login import login_user, logout_user, current_user, login_required
@@ -77,9 +78,35 @@ def logout():
     logout_user()
     app.config['UPLOAD_FOLDER']='app/uploads/'
     return redirect(url_for('index'))
+	
+@app.route('/account', methods=('GET', 'POST'))
+@app.route('/account/<id>', methods=('GET', 'POST'))
+def account():
+    registro = User.query.filter_by(username=current_user.username).first()
+    return render_template('account.html', registro=registro)	
 
-# abaixo, /uploads e /uploads/<filename>: tratam do upload e armazenamento dos arquivos
-
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+    registro = User.query.filter_by(id=current_user.id).first()
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        if email and password:
+            registro.email = email
+            registro.password = password
+            db.session.commit()
+            flash("Usuario atualizado com sucesso", "success")
+            return redirect( url_for('account'))
+    return render_template('update.html', registro=registro)		
+	    
+@app.route('/delete/<int:id>')
+def delete(id):
+    registro = User.query.filter_by(id=current_user.id).first()
+    db.session.delete(registro)
+    db.session.commit()
+    shutil.rmtree(app.config['UPLOAD_FOLDER'])
+    return logout()
+	
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -134,7 +161,19 @@ def upload_engine():
 
     return render_template('upload_engine.html')
 
+@app.route('/sobre')
+def sobre():
+	return render_template('sobre.html')
 
+@app.route('/contato')
+def contato():
+	return render_template('contato.html')
+	
+@app.route('/termos')
+def termos():
+	return render_template('termos.html')
+	
+	
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html'), 404

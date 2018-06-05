@@ -1,0 +1,46 @@
+{% extends 'home.html' %}
+{% block content %}
+<div class="container">
+	<h1>Minha conta</h1>
+	<hr>
+	<table class="table">
+		<tr>
+			<td>Username</td>
+			<td>Email</td>
+			<td>Password</td>
+		</tr>
+
+		<tr>
+			<td>{{ registro.username }}</td>
+			<td>{{ registro.email }}</td>
+			<td>{{ registro.password }}</td>
+		</tr>
+
+	</table>
+	<hr>
+	<a class="btn btn-info" href="/update/{{ registro.id }}" role="button">Atualizar dados da conta</a>
+	<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal">Excluir minha conta</button>
+	  <div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h4 class="modal-title">Excluir conta</h4>
+			</div>
+			<div class="modal-body">
+			  <p>Deseja realmente exluir sua conta e todos os arquivos?</p>
+			</div>
+			<div class="modal-footer">
+			  <a class="btn btn-secondary" href="/account" role="button">Não</a>
+			  <a class="btn btn-danger" href="/delete/{{ current_user.id }}" role="button">Sim</a>
+			</div>
+		  </div>
+		</div>
+	  </div>
+  
+
+
+    
+
+
+</div>
+{% endblock %}
