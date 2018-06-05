@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 from app import app, db, lm
 from flask import Flask, request, redirect, url_for, session, render_template, send_from_directory, flash
@@ -43,6 +44,7 @@ def registro():
             db.session.commit()
             flash("Usuario registrado com sucesso", "success")
 
+            app.config['UPLOAD_FOLDER'] = 'app/uploads/'
             os.mkdir(os.path.join(
                 app.config['UPLOAD_FOLDER'], str(u.username)))
             return redirect(url_for('login'))
@@ -120,15 +122,19 @@ def uploaded_file(filename):
 @app.route('/home')
 def home():
     #print("id: " + session.get('user_id'))
-    print("id :" + current_user.get_id())
+    #print("id :" + current_user.get_id())
+
+    #print("Removido: " + re.sub('app/uploads/', '', app.config['UPLOAD_FOLDER']))
+   # print(str(User.query.filter_by(id=current_user.get_id()).first().username))
     if not current_user.is_authenticated:
         # lm.unauthorized()
         flash("Você foi desconectado! Por favor logue-se novamente!")
         logout_user()
         return redirect(url_for('login'))
-    #if current_user.get_id() != session.get('user_id'):
-     #   logout_user()
-      #  return redirect(url_for('login'))
+    if session_bugged():
+        flash("Sessão encerrada!")
+        logout_user()
+        return redirect(url_for('login'))
     if not os.listdir(app.config['UPLOAD_FOLDER']):
         flash("Diretório pessoal vazio!")
     return autoindex()
@@ -140,9 +146,10 @@ def upload_engine():
         # lm.unauthorized()
         flash("Você foi desconectado! Por favor logue-se novamente!")
         return redirect(url_for('login'))
-    #if current_user.get_id() != session.get('user_id'):
-     #   logout_user()
-      #  return redirect(url_for('login'))
+    if session_bugged():
+        flash("Sessão encerrada!")
+        logout_user()
+        return redirect(url_for('login'))
     if request.method == 'POST':
 
         if 'text' in request.form and 'filename' in request.form:
@@ -191,5 +198,9 @@ def page_not_found(e):
 def autoindex(path='.'):
     return files_index.render_autoindex(path)
 
-#def session_bugged():
-#    if 
+def session_bugged():
+    #user_atual = app.config['UPLOAD_FOLDER']  'app/uploads/'
+    user_atual = re.sub('app/uploads/', '', app.config['UPLOAD_FOLDER'])
+    db_user = User.query.filter_by(id=current_user.get_id()).first() 
+    if str(db_user.username) != str(user_atual):
+        return True
