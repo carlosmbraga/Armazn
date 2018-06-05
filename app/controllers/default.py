@@ -1,4 +1,5 @@
 import os
+import glob
 import re
 import shutil
 import hashlib
@@ -117,6 +118,16 @@ def delete(id):
     shutil.rmtree(app.config['UPLOAD_FOLDER'])
     return logout()
 	
+@app.route('/remove_files/<username>')
+@login_required	
+def remove_files(username):
+    registro = User.query.filter_by(username=current_user.username).first()
+    file = app.config['UPLOAD_FOLDER'] + "/*"
+    r = glob.glob(file)
+    for i in r:
+       os.remove(i)
+    return redirect( url_for('home'))
+    flash("Arquivos removidos com sucesso", "success")
 
 def allowed_file(filename):
     return '.' in filename and \

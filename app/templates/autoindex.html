@@ -37,6 +37,32 @@
 	<div class="container">
 	<h2>Arquivos</h2>
 	<hr>
+<div class="fixed-bottom">
+<button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#RemoveFile">Excluir todos os arquivos</button>
+</div>
+	  <div class="modal fade" id="RemoveFile" role="dialog">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h4 class="modal-title">Excluir arquivos</h4>
+			</div>
+			<div class="modal-body">
+			  <p>Deseja realmente exluir todos os arquivos?</p>
+			</div>
+			<div class="modal-footer">
+			  <a class="btn btn-secondary" href="" role="button">Não</a>
+			  <a class="btn btn-danger" href="/remove_files/{{current_user.username}}" role="button">Sim</a>
+			</div>
+		  </div>
+		</div>
+	  </div>
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+
 
 	{% with messages = get_flashed_messages() %}
 		 {% if messages %}
@@ -54,6 +80,7 @@
 	{% endblock %}
 
   </body>
+   
 {% endblock %}
 
 {% block footer %}
