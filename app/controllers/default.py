@@ -1,16 +1,17 @@
 import os
 import re
 import shutil
+import hashlib
 from app import app, db, lm
 from flask import Flask, request, redirect, url_for, session, render_template, send_from_directory, flash
-from flask_login import login_user, logout_user, current_user, fresh_login_required
+from flask_login import login_user, logout_user, current_user, fresh_login_required, login_required
 from werkzeug.utils import secure_filename
 from app.models import forms
 from app.models import tables
 from app.models.tables import User
 from flask_autoindex import AutoIndex, RootDirectory
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'odt', 'py', 'c', 'java', 'cpp', 'jpg', 'docx', 'doc'])
+ALLOWED_EXTENSIONS = set(['txt', 'png', 'py', 'c', 'java', 'cpp', 'jpg', 'pdf','zip', 'tar', 'gz', 'tgz', '7z', 'alz', 'rar', 'sql', 'js', 'rb', 'php', 'cpp', 'xml', 'odt', 'html', 'doc', 'docx', 'exe', 'log', 'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'dll'])
 UPLOAD_FOLDER = 'app/uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -39,17 +40,18 @@ def registro():
         email = form.email.data,
         password = form.password.data
         if username and email and password:
-            u = User(username, password, email)
-            db.session.add(u)
-            db.session.commit()
-            flash("Usuario registrado com sucesso", "success")
+            try:
+                u = User(username, password, email)
+                db.session.add(u)
+                db.session.commit()
+                flash("Usuario registrado com sucesso", "success")
 
-            app.config['UPLOAD_FOLDER'] = 'app/uploads/'
-            os.mkdir(os.path.join(
-                app.config['UPLOAD_FOLDER'], str(u.username)))
-            return redirect(url_for('login'))
-        else:
-            flash("Falha no registro", "error")
+                os.mkdir(os.path.join(
+                    app.config['UPLOAD_FOLDER'], str(u.username)))
+                return redirect(url_for('login'))
+            except:
+                flash("Usuario ja cadastrado, por favor tente novamente!", "error")
+                return redirect(url_for('registro'))   
     else:
         return render_template('registro.html', form=form)
 
@@ -72,6 +74,8 @@ def login():
             return redirect(url_for('home'))
         else:
             flash("Your email or password doesn't match!", "error")
+            return redirect(url_for('login'))
+            
     else:
         return render_template('login.html', form=form)
 
@@ -83,11 +87,14 @@ def logout():
 	
 @app.route('/account', methods=('GET', 'POST'))
 @app.route('/account/<id>', methods=('GET', 'POST'))
+@login_required
 def account():
     registro = User.query.filter_by(username=current_user.username).first()
+    registro.password = hashlib.md5(registro.password.encode('utf-8')).hexdigest()
     return render_template('account.html', registro=registro)	
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
+@login_required
 def update(id):
     registro = User.query.filter_by(id=current_user.id).first()
     if request.method == "POST":
@@ -102,6 +109,7 @@ def update(id):
     return render_template('update.html', registro=registro)		
 	    
 @app.route('/delete/<int:id>')
+@login_required
 def delete(id):
     registro = User.query.filter_by(id=current_user.id).first()
     db.session.delete(registro)
@@ -193,6 +201,11 @@ def termos():
 def page_not_found(e):
     return render_template('error.html'), 404
 
+@app.errorhandler(401)
+def page_not_found(e):
+    flash("Acesso negado, por favor faça Login", "error")
+    return redirect( url_for('login'))	
+	
 @app.route('/arquivos')
 @app.route('/arquivos/<path:path>')
 def autoindex(path='.'):
