@@ -5,3 +5,5 @@ app/uploads
 app/info
 venv/
 info
+app.wsgi
+run.pyc

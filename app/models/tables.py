@@ -1,4 +1,7 @@
 from app import db
+import os
+#import unicode
+import unicodedata
 
 class User(db.Model):
 	__tablename__ = "users"
@@ -7,6 +10,8 @@ class User(db.Model):
 	username = db.Column(db.String(20), unique=True)
 	email = db.Column(db.String(50), unique=True)
 	password = db.Column(db.String(20))
+	#session_token = db.Column(db.String(40), index=True) 
+
 	
 	@property
 	def is_authenticated(self):
@@ -19,6 +24,7 @@ class User(db.Model):
 		return False
 	
 	def get_id(self):
+		#self.session_token = os.urandom(64).decode('utf-8', 'ignore')
 		return str(self.id)
 		
 	def __init__(self, username, password, email):
