@@ -1,4 +1,4 @@
-from app import manager
+from app import manager, app
 
 if __name__ == "__main__":
-    manager.run()
+   app.run(threaded=True)
