@@ -19,8 +19,5 @@ manager.add_command('db', MigrateCommand)
 lm = LoginManager()
 lm.init_app(app)
 
-def run():
-	app.run(threaded = True)
-
 from app.controllers import default
 from app.models import tables

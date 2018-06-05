@@ -7,3 +7,4 @@ venv/
 info
 app.wsgi
 run.pyc
+mysql-credentials
